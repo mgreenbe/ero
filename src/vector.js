@@ -3,7 +3,6 @@ function Vector(arr) {
   this.length = this.arr.length;
 
   this.mul = (k, i) => {
-    console.log(k, typeof k, i);
     if (typeof i === "number") {
       const v = this.arr[i];
       const w = typeof v === "number" ? k * v : v.mul(k);

@@ -1,6 +1,6 @@
 import React from "react";
 import { SubmissionError } from "redux-form/immutable";
-import { Field, reduxForm } from "redux-form/immutable";
+import { Field, reduxForm, reset } from "redux-form/immutable";
 import { Alert, Button } from "reactstrap";
 import VerticalSpacer from "./vertical-spacer.js";
 import Fraction from "fraction.js";
@@ -35,6 +35,9 @@ const submit = (values, dispatch) => {
       throw new SubmissionError({ matrixString: message });
     })
     .then(matrix => {
+      dispatch(reset("swap"));
+      dispatch(reset("multiply"));
+      dispatch(reset("transvect"));
       dispatch({
         type: "set",
         payload: { key: "matrix", value: matrix }
@@ -62,7 +65,7 @@ const renderInput = ({ input, meta }) => {
   );
 };
 
-const Entry = ({ entry, valid, errorMessage, handleSubmit, createMatrix }) => {
+const Entry = ({ handleSubmit }) => {
   return (
     <form
       className="card-block"
@@ -78,7 +81,7 @@ const Entry = ({ entry, valid, errorMessage, handleSubmit, createMatrix }) => {
       >
         <div>
           <i>
-            Enter matrix. Separate entries with spaces, rows with semicolons.
+            Enter a matrix. Separate entries with spaces, rows with semicolons.
           </i>
         </div>
         <VerticalSpacer />
