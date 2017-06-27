@@ -1,14 +1,73 @@
 import React from "react";
-import { Alert, Input, Button } from "reactstrap";
+import { SubmissionError } from "redux-form/immutable";
+import { Field, reduxForm } from "redux-form/immutable";
+import { Alert, Button } from "reactstrap";
 import VerticalSpacer from "./vertical-spacer.js";
+import Fraction from "fraction.js";
+import { matrix } from "./vector.js";
 
-import "bootstrap/dist/css/bootstrap.css";
+const parseFraction = x => {
+  try {
+    return new Fraction(x);
+  } catch (e) {
+    throw new Error(`Couldn't parse the expression "${x}".`);
+  }
+};
 
-const Entry = ({ entry, valid, errorMessage, handleChange, createMatrix }) => {
+const createMatrix = matrixString => {
+  return matrix(
+    matrixString
+      .split(/\s*;\s*/)
+      .map(row => row.trim().split(/\s+/).map(parseFraction))
+  );
+};
+
+const submit = (values, dispatch) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const matrix = createMatrix(values.get("matrixString"));
+      resolve(matrix);
+    } catch (e) {
+      reject(e.message);
+    }
+  })
+    .catch(message => {
+      throw new SubmissionError({ matrixString: message });
+    })
+    .then(matrix => {
+      dispatch({
+        type: "set",
+        payload: { key: "matrix", value: matrix }
+      });
+    });
+};
+
+const renderInput = ({ input, meta }) => {
   return (
-    <div
+    <div>
+      <input
+        {...input}
+        placeholder="1 0 0; 0 1 0; 0 0 1"
+        className="form-control"
+        style={{ fontFamily: "monospace", fontSize: 16 }}
+      />
+      {meta.error &&
+        <div>
+          <VerticalSpacer />
+          <Alert style={{ marginBottom: 0 }} color="danger">
+            {meta.error}
+          </Alert>
+        </div>}
+    </div>
+  );
+};
+
+const Entry = ({ entry, valid, errorMessage, handleSubmit, createMatrix }) => {
+  return (
+    <form
       className="card-block"
       style={{ display: "flex", alignItems: "flex-end" }}
+      onSubmit={handleSubmit(submit)}
     >
       <div
         style={{
@@ -22,28 +81,17 @@ const Entry = ({ entry, valid, errorMessage, handleChange, createMatrix }) => {
           <i>Separate entries with spaces, rows with semicolons.</i>
         </div>
         <VerticalSpacer />
-        <Input
-          name="entry"
-          type="text"
-          placeholder="1 0 0; 0 1 0; 0 0 1"
-          value={entry}
-          style={{ fontFamily: "monospace" }}
-          onChange={handleChange}
-        />
-        <div style={{ display: "flex", justifyContent: "flex-end" }} />
-        {!valid &&
-          <div>
-            <VerticalSpacer />
-            <Alert style={{ marginBottom: 0 }} color="danger">
-              {errorMessage}
-            </Alert>
-          </div>}
+        <Field name="matrixString" type="text" component={renderInput} />
+        <div />
       </div>
-      <Button style={{ marginLeft: 20 }} onClick={createMatrix} color="primary">
+      <Button type="submit" style={{ marginLeft: 20 }} color="primary">
         Create
       </Button>
-    </div>
+    </form>
   );
 };
 
-export default Entry;
+export default reduxForm({
+  form: "entry",
+  initialValues: { matrixString: "" }
+})(Entry);

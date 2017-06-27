@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 
 const renderRow = (row, i, nRows) => {
   return (
@@ -43,23 +44,35 @@ const renderRow = (row, i, nRows) => {
   );
 };
 
-const MatrixView = ({ matrix }) => {
+const mapStateToProps = state => {
+  return {
+    matrix: state.getIn(["app", "matrix"])
+  };
+};
+
+const matrixView = ({ matrix }) => {
   return (
-    <div
-      className="card-block"
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        borderTop: "solid 1px rgba(0, 0, 0, 0.125)"
-      }}
-    >
-      <table>
-        <tbody>
-          {matrix.map((row, i) => renderRow(row, i, matrix.length))}
-        </tbody>
-      </table>
+    <div>
+      {matrix &&
+        matrix.length > 0 &&
+        <div
+          className="card-block"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            borderTop: "solid 1px rgba(0, 0, 0, 0.125)"
+          }}
+        >
+          <table>
+            <tbody>
+              {matrix.arr.map((row, i) => renderRow(row.arr, i, matrix.length))}
+            </tbody>
+          </table>
+        </div>}
     </div>
   );
 };
+
+const MatrixView = connect(mapStateToProps)(matrixView);
 
 export default MatrixView;

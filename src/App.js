@@ -7,5 +7,6 @@ const style = {
   alignItems: "center",
   margin: 20
 };
+
 const App = () => <div style={style}><Block /></div>;
 export default App;
