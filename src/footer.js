@@ -10,6 +10,10 @@ const mapDispatchToProps = dispatch => {
       dispatch(reset("swap"));
       dispatch(reset("multiply"));
       dispatch(reset("transvect"));
+      dispatch({
+        type: "set",
+        payload: { key: "matrix", value: undefined }
+      });
     }
   };
 };
@@ -19,7 +23,7 @@ const Footer = ({ onClick }) =>
     className="card-footer"
     style={{ display: "flex", justifyContent: "flex-end", padding: 20 }}
   >
-    <Button onClick={onClick} color="primary">Reset</Button>
+    <Button onClick={onClick} color="warning">Reset</Button>
   </div>;
 
 export default connect(null, mapDispatchToProps)(Footer);

@@ -76,15 +76,16 @@ const Entry = ({ entry, valid, errorMessage, handleSubmit, createMatrix }) => {
           alignItems: "stretch"
         }}
       >
-        <div><b>Enter matrix:</b></div>
         <div>
-          <i>Separate entries with spaces, rows with semicolons.</i>
+          <i>
+            Enter matrix. Separate entries with spaces, rows with semicolons.
+          </i>
         </div>
         <VerticalSpacer />
         <Field name="matrixString" type="text" component={renderInput} />
         <div />
       </div>
-      <Button type="submit" style={{ marginLeft: 20 }} color="primary">
+      <Button type="submit" style={{ marginLeft: 20 }} color="success">
         Create
       </Button>
     </form>

@@ -9,6 +9,7 @@ const matrix = createMatrix([
   [new Fraction(1 / 2), new Fraction(2 / 3), new Fraction(3 / 4)],
   [new Fraction(0), new Fraction(0), new Fraction(0)]
 ]);
+
 const app = (state = Map({ matrix }), action) => {
   switch (action.type) {
     case "set":
