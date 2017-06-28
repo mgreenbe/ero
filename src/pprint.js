@@ -1,5 +1,8 @@
 const maxLength = arr => Math.max(...arr.map(x => x.length));
 
+const maxLength2d = (arr, stringify = x => x.toString()) =>
+  Math.max(...arr.map(a => maxLength(a.map(x => stringify(x)))));
+
 const padEntries = (arr, options) => {
   const { length, methodName, padding } = Object.assign(
     {},
@@ -45,8 +48,11 @@ const array1dToString = (arr, options) => {
 };
 
 const array2dToString = (arr, options) => {
-  const length = Math.max(...arr.map(a => maxLength(a)));
-  const _options = Object.assign({}, options, { length });
+  const stringify = typeof options === "object" && "stringify" in options
+    ? options.stringify
+    : x => x.toString();
+  const length = maxLength2d(arr, stringify);
+  const _options = Object.assign({}, options, { length, stringify });
   return arr.map(a => array1dToString(a, _options)).join("\n");
 };
 
