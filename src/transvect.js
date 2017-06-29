@@ -4,6 +4,7 @@ import { Field, reduxForm, SubmissionError } from "redux-form/immutable";
 import renderDropdown from "./renderDropdown";
 import Fraction from "fraction.js";
 import VerticalSpacer from "./vertical-spacer.js";
+import { transvectOp } from "./action-creators.js";
 
 const parseFraction = x => {
   if (!x || (typeof x === "string" && x.trim() === "")) {
@@ -39,11 +40,8 @@ const submit = (values, dispatch) => {
     .catch(_error => {
       throw new SubmissionError({ _error });
     })
-    .then(payload => {
-      dispatch({
-        type: "transvect",
-        payload
-      });
+    .then(({ i, j, k }) => {
+      dispatch(transvectOp(i, j, k));
     });
 };
 

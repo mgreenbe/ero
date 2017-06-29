@@ -3,6 +3,7 @@ import { Alert, Button } from "reactstrap";
 import { Field, reduxForm, SubmissionError } from "redux-form/immutable";
 import VerticalSpacer from "./vertical-spacer.js";
 import renderDropdown from "./renderDropdown.js";
+import { swapOp } from "./action-creators.js";
 
 const submit = (values, dispatch) => {
   const i = values.get("i");
@@ -17,11 +18,8 @@ const submit = (values, dispatch) => {
     .catch(_error => {
       throw new SubmissionError({ _error });
     })
-    .then(payload => {
-      dispatch({
-        type: "swap",
-        payload
-      });
+    .then(({ i, j }) => {
+      dispatch(swapOp(i, j));
     });
 };
 

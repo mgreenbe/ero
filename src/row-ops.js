@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import Swap from "./swap.js";
 import Multiply from "./multiply.js";
 import Transvect from "./transvect.js";
+import Hint from "./hint";
 
 const style = {
   display: "flex",
@@ -12,8 +13,12 @@ const style = {
   alignItems: "center"
 };
 
-const rowOps = ({ nRows }) => {
+const rowOps = ({ nRows, status }) => {
   const rowIndices = nRows && Array(nRows).fill(null).map((x, i) => i);
+  const opType = status && status.opType;
+  const hilite = x => {
+    return x === opType ? { backgroundColor: "pink" } : {};
+  };
   return nRows
     ? <ul
         className="list-group list-group-flush"
@@ -22,14 +27,17 @@ const rowOps = ({ nRows }) => {
           flexDirection: "column"
         }}
       >
-        <li className="list-group-item">
+        <li className="list-group-item highlight" style={hilite("swap")}>
           <Swap style={style} rowIndices={rowIndices} />
         </li>
-        <li className="list-group-item">
+        <li className="list-group-item highlight" style={hilite("multiply")}>
           <Multiply style={style} rowIndices={rowIndices} />
         </li>
-        <li className="list-group-item" style={{ borderBottom: "None" }}>
+        <li className="list-group-item highlight" style={hilite("transvect")}>
           <Transvect style={style} rowIndices={rowIndices} />
+        </li>
+        <li className="list-group-item" style={{ borderBottom: "None" }}>
+          <Hint style={style} />
         </li>
       </ul>
     : null;
@@ -37,8 +45,10 @@ const rowOps = ({ nRows }) => {
 
 const mapStateToProps = state => {
   const matrix = state.getIn(["app", "matrix"]);
+  const status = state.getIn(["app", "status"]);
   return {
-    nRows: matrix ? matrix.length : undefined
+    nRows: matrix ? matrix.length : undefined,
+    status
   };
 };
 

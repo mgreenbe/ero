@@ -4,6 +4,7 @@ import { Field, reduxForm, SubmissionError } from "redux-form/immutable";
 import renderDropdown from "./renderDropdown.js";
 import VerticalSpacer from "./vertical-spacer.js";
 import Fraction from "fraction.js";
+import { multiplyOp } from "./action-creators.js";
 
 const parseFraction = x => {
   if (!x || (typeof x === "string" && x.trim() === "")) {
@@ -36,11 +37,8 @@ const submit = (values, dispatch) => {
     .catch(_error => {
       throw new SubmissionError({ _error });
     })
-    .then(payload => {
-      dispatch({
-        type: "multiply",
-        payload
-      });
+    .then(({ i, k }) => {
+      dispatch(multiplyOp(i, k));
     });
 };
 

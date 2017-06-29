@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-
+import VerticalSpacer from "./vertical-spacer.js";
 const renderRow = (row, i, nRows) => {
   return (
     <tr key={i}>
@@ -46,11 +46,12 @@ const renderRow = (row, i, nRows) => {
 
 const mapStateToProps = state => {
   return {
-    matrix: state.getIn(["app", "matrix"])
+    matrix: state.getIn(["app", "matrix"]),
+    status: state.getIn(["app", "status"])
   };
 };
 
-const matrixView = ({ matrix }) => {
+const matrixView = ({ matrix, status }) => {
   return (
     <div>
       {matrix &&
@@ -59,15 +60,22 @@ const matrixView = ({ matrix }) => {
           className="card-block"
           style={{
             display: "flex",
-            justifyContent: "center",
+            flexDirection: "column",
+            alignItems: "stretch",
             borderTop: "solid 1px rgba(0, 0, 0, 0.125)"
           }}
         >
-          <table>
+          <table style={{ alignSelf: "center" }}>
             <tbody>
               {matrix.arr.map((row, i) => renderRow(row.arr, i, matrix.length))}
             </tbody>
           </table>
+          {status &&
+            status.value &&
+            <div>
+              <VerticalSpacer />
+              <span><strong>This matrix is in row echelon form.</strong></span>
+            </div>}
         </div>}
     </div>
   );

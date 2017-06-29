@@ -5,7 +5,7 @@ import { Alert, Button } from "reactstrap";
 import VerticalSpacer from "./vertical-spacer.js";
 import Fraction from "fraction.js";
 import { matrix } from "./vector.js";
-
+import { set } from "./action-creators.js";
 const parseFraction = x => {
   try {
     return new Fraction(x);
@@ -38,10 +38,8 @@ const submit = (values, dispatch) => {
       dispatch(reset("swap"));
       dispatch(reset("multiply"));
       dispatch(reset("transvect"));
-      dispatch({
-        type: "set",
-        payload: { key: "matrix", value: matrix }
-      });
+      dispatch(set("matrix", matrix));
+      dispatch(set("status", undefined));
     });
 };
 

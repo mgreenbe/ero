@@ -14,6 +14,10 @@ const mapDispatchToProps = dispatch => {
         type: "set",
         payload: { key: "matrix", value: undefined }
       });
+      dispatch({
+        type: "set",
+        payload: { key: "status", value: undefined }
+      });
     }
   };
 };
