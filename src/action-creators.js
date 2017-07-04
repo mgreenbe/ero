@@ -1,7 +1,7 @@
-const set = (key, value) => {
+const set = obj => {
   return {
     type: "set",
-    payload: { key, value }
+    payload: obj
   };
 };
 

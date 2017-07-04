@@ -40,7 +40,7 @@ const hintButton = ({ onClick }) => {
 const HintButton = connect(null, mapDispatchToProps)(hintButton);
 
 const mapStateToProps = state => {
-  const matrix = state.getIn(["app", "matrix"]).arr.map(row => row.arr);
+  const matrix = state.present.getIn(["app", "matrix"]).arr.map(row => row.arr);
   return { matrix };
 };
 const hint = ({ matrix, style }) => {

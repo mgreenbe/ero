@@ -86,5 +86,6 @@ const Transvect = ({ style, rowIndices, handleSubmit, error }) => {
 const initialValues = { i: 0, j: 1, k: "" };
 export default reduxForm({
   form: "transvect",
-  initialValues
+  initialValues,
+  getFormState: state => state.present.get("form")
 })(Transvect);

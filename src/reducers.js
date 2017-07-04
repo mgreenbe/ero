@@ -1,6 +1,7 @@
 import { Map } from "immutable";
 import { combineReducers } from "redux-immutable";
 import { reducer as form } from "redux-form/immutable";
+import undoable, { includeAction } from "redux-undo";
 import isRef from "./is-ref.js";
 //import Fraction from "fraction.js";
 //import { matrix as createMatrix } from "./vector.js";
@@ -15,7 +16,11 @@ const app = (state = Map({}), action) => {
   const { type, payload } = action;
   switch (type) {
     case "set":
-      return state.set(payload.key, payload.value);
+      console.log(payload);
+      return Object.keys(payload).reduce((acc, key) => {
+        console.log(key, payload[key]);
+        return acc.set(key, payload[key]);
+      }, state);
     case "swap":
       return state
         .set("matrix", state.get("matrix").swap(payload.i, payload.j))
@@ -41,4 +46,13 @@ const app = (state = Map({}), action) => {
   }
 };
 
-export const rootReducer = combineReducers({ app, form });
+export const rootReducer = undoable(combineReducers({ app, form }), {
+  filter: includeAction([
+    "set",
+    "swap",
+    "multiply",
+    "transvect",
+    "@@redux-form/CHANGE"
+  ])
+});
+//export const rootReducer = combineReducers({ reducer: undoable(reducer) });

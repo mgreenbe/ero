@@ -46,8 +46,8 @@ const renderRow = (row, i, nRows) => {
 
 const mapStateToProps = state => {
   return {
-    matrix: state.getIn(["app", "matrix"]),
-    status: state.getIn(["app", "status"])
+    matrix: state.present.getIn(["app", "matrix"]),
+    status: state.present.getIn(["app", "status"])
   };
 };
 

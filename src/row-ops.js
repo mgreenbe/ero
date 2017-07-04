@@ -44,8 +44,8 @@ const rowOps = ({ nRows, status }) => {
 };
 
 const mapStateToProps = state => {
-  const matrix = state.getIn(["app", "matrix"]);
-  const status = state.getIn(["app", "status"]);
+  const matrix = state.present.getIn(["app", "matrix"]);
+  const status = state.present.getIn(["app", "status"]);
   return {
     nRows: matrix ? matrix.length : undefined,
     status

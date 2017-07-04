@@ -52,5 +52,6 @@ const Swap = ({ style, rowIndices, handleSubmit, error }) => {
 
 export default reduxForm({
   form: "swap",
-  initialValues: { i: 0, j: 1 }
+  initialValues: { i: 0, j: 1 },
+  getFormState: state => state.present.get("form")
 })(Swap);

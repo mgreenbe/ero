@@ -38,8 +38,8 @@ const submit = (values, dispatch) => {
       dispatch(reset("swap"));
       dispatch(reset("multiply"));
       dispatch(reset("transvect"));
-      dispatch(set("matrix", matrix));
-      dispatch(set("status", undefined));
+      dispatch(set({ matrix, status: undefined }));
+      //      dispatch(set("status", undefined));
     });
 };
 
@@ -95,5 +95,6 @@ const Entry = ({ handleSubmit }) => {
 
 export default reduxForm({
   form: "entry",
-  initialValues: { matrixString: "" }
+  initialValues: { matrixString: "" },
+  getFormState: state => state.present.get("form")
 })(Entry);

@@ -73,5 +73,6 @@ const Multiply = ({ style, rowIndices, handleSubmit, error }) => {
 const initialValues = { i: 0, k: "" };
 export default reduxForm({
   form: "multiply",
-  initialValues
+  initialValues,
+  getFormState: state => state.present.get("form")
 })(Multiply);
